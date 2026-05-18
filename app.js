@@ -98,6 +98,13 @@ async function fetchCurrentRates() {
     document.getElementById('last-updated').textContent =
       formatTime(state.currentRates.updated_at);
 
+    // Show data source note if available
+    const noteEl = document.getElementById('data-source-note');
+    if (noteEl && state.currentRates.note) {
+      noteEl.textContent = '⚠ ' + state.currentRates.note;
+      noteEl.style.display = 'block';
+    }
+
     showError(false);
     setStatus('ok', '正常');
   } catch (e) {

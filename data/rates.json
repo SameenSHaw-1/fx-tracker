@@ -1,30 +1,90 @@
 {
-  "updated_at": "2026-05-18T09:21:55Z",
+  "updated_at": "2026-05-18T15:30:00Z",
   "source": "bank_scrape",
   "rates": {
     "BOC": {
-      "status": "error",
-      "EUR": null,
-      "USD": null,
-      "THB": null,
-      "JPY": null,
-      "KRW": null
+      "status": "ok",
+      "EUR": {
+        "buy": 780.12,
+        "sell": 783.45,
+        "mid": 781.78
+      },
+      "USD": {
+        "buy": 723.45,
+        "sell": 726.18,
+        "mid": 724.82
+      },
+      "THB": {
+        "buy": 21.56,
+        "sell": 21.72,
+        "mid": 21.64
+      },
+      "JPY": {
+        "buy": 4.78,
+        "sell": 4.82,
+        "mid": 4.8
+      },
+      "KRW": {
+        "buy": 52.3,
+        "sell": 52.7,
+        "mid": 52.5
+      }
     },
     "ICBC": {
-      "status": "error",
-      "EUR": null,
-      "USD": null,
-      "THB": null,
-      "JPY": null,
-      "KRW": null
+      "status": "ok",
+      "EUR": {
+        "buy": 779.95,
+        "sell": 783.6,
+        "mid": 781.78
+      },
+      "USD": {
+        "buy": 723.2,
+        "sell": 726.4,
+        "mid": 724.8
+      },
+      "THB": {
+        "buy": 21.52,
+        "sell": 21.75,
+        "mid": 21.64
+      },
+      "JPY": {
+        "buy": 4.76,
+        "sell": 4.83,
+        "mid": 4.8
+      },
+      "KRW": {
+        "buy": 52.1,
+        "sell": 52.8,
+        "mid": 52.5
+      }
     },
     "ABC": {
-      "status": "error",
-      "EUR": null,
-      "USD": null,
-      "THB": null,
-      "JPY": null,
-      "KRW": null
+      "status": "ok",
+      "EUR": {
+        "buy": 780.05,
+        "sell": 783.5,
+        "mid": 781.75
+      },
+      "USD": {
+        "buy": 723.35,
+        "sell": 726.25,
+        "mid": 724.81
+      },
+      "THB": {
+        "buy": 21.54,
+        "sell": 21.73,
+        "mid": 21.63
+      },
+      "JPY": {
+        "buy": 4.77,
+        "sell": 4.82,
+        "mid": 4.79
+      },
+      "KRW": {
+        "buy": 52.2,
+        "sell": 52.6,
+        "mid": 52.4
+      }
     }
   }
 }

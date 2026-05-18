@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>汇率追踪 FX Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="title">汇率追踪 <span class="subtitle">FX Tracker</span></h1>
+      </div>
+      <div class="header-right">
+        <div class="update-info">
+          <span class="label">最后更新</span>
+          <span class="value" id="last-updated">--</span>
+        </div>
+        <div class="countdown">
+          <span class="label">下次刷新</span>
+          <span class="value" id="countdown">5:00</span>
+        </div>
+        <div id="status-badge" class="status-badge status-ok">● 正常</div>
+      </div>
+    </header>
+
+    <!-- Loading Spinner -->
+    <div id="spinner" class="spinner-container" style="display:none;">
+      <div class="spinner"></div>
+      <span>加载中...</span>
+    </div>
+
+    <!-- Error Banner -->
+    <div id="error-banner" class="error-banner" style="display:none;">
+      <span>⚠️ 数据加载失败，请检查网络连接或稍后重试。</span>
+      <button class="retry-btn" onclick="refreshData()">重试</button>
+    </div>
+
+    <!-- Rates Table -->
+    <section class="card rates-card">
+      <h2 class="card-title">实时汇率总览 <span class="card-subtitle">（100 单位外币 = CNY）</span></h2>
+      <div class="table-wrapper">
+        <table class="rates-table" id="rates-table">
+          <thead>
+            <tr>
+              <th class="col-currency" rowspan="2">货币</th>
+              <th class="col-bank" colspan="3">中国银行 BOC</th>
+              <th class="col-bank" colspan="3">工商银行 ICBC</th>
+              <th class="col-bank" colspan="3">农业银行 ABC</th>
+            </tr>
+            <tr>
+              <th>现汇买入</th><th>现汇卖出</th><th>中间价</th>
+              <th>现汇买入</th><th>现汇卖出</th><th>中间价</th>
+              <th>现汇买入</th><th>现汇卖出</th><th>中间价</th>
+            </tr>
+          </thead>
+          <tbody id="rates-body">
+            <!-- Filled by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Chart Section -->
+    <section class="card chart-card">
+      <h2 class="card-title">历史走势图</h2>
+
+      <!-- Currency Tabs -->
+      <div class="currency-tabs" id="currency-tabs">
+        <button class="tab active" data-currency="EUR">EUR</button>
+        <button class="tab" data-currency="USD">USD</button>
+        <button class="tab" data-currency="THB">THB</button>
+        <button class="tab" data-currency="JPY">JPY</button>
+        <button class="tab" data-currency="KRW">KRW</button>
+      </div>
+
+      <!-- Time Range Buttons -->
+      <div class="time-range-btns" id="time-range-btns">
+        <button class="range-btn active" data-range="today">今日</button>
+        <button class="range-btn" data-range="7d">近7天</button>
+        <button class="range-btn" data-range="1m">近1个月</button>
+        <button class="range-btn" data-range="3m">近3个月</button>
+        <button class="range-btn" data-range="6m">近6个月</button>
+      </div>
+
+      <!-- Price Type Toggle -->
+      <div class="price-type-toggle" id="price-type-toggle">
+        <button class="type-btn active" data-type="mid">中间价</button>
+        <button class="type-btn" data-type="buy">现汇买入</button>
+        <button class="type-btn" data-type="sell">现汇卖出</button>
+      </div>
+
+      <!-- Bank Checkboxes -->
+      <div class="bank-checkboxes" id="bank-checkboxes">
+        <label class="check-item">
+          <input type="checkbox" value="BOC" checked />
+          <span class="checkmark"></span>
+          中国银行
+        </label>
+        <label class="check-item">
+          <input type="checkbox" value="ICBC" checked />
+          <span class="checkmark"></span>
+          工商银行
+        </label>
+        <label class="check-item">
+          <input type="checkbox" value="ABC" checked />
+          <span class="checkmark"></span>
+          农业银行
+        </label>
+      </div>
+
+      <!-- Chart Canvas -->
+      <div class="chart-container">
+        <canvas id="rate-chart"></canvas>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>数据来源：中国银行 · 工商银行 · 农业银行 ｜ 每5分钟自动刷新</p>
+      <p>数据仅供参考，不构成任何交易建议</p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

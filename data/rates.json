@@ -1,0 +1,30 @@
+{
+  "updated_at": "2026-05-18T15:30:00Z",
+  "source": "bank_scrape",
+  "rates": {
+    "BOC": {
+      "status": "ok",
+      "EUR": {"buy": 780.12, "sell": 783.45, "mid": 781.78},
+      "USD": {"buy": 723.45, "sell": 726.18, "mid": 724.82},
+      "THB": {"buy": 21.56, "sell": 21.72, "mid": 21.64},
+      "JPY": {"buy": 4.78, "sell": 4.82, "mid": 4.80},
+      "KRW": {"buy": 0.523, "sell": 0.527, "mid": 0.525}
+    },
+    "ICBC": {
+      "status": "ok",
+      "EUR": {"buy": 779.95, "sell": 783.60, "mid": 781.78},
+      "USD": {"buy": 723.20, "sell": 726.40, "mid": 724.80},
+      "THB": {"buy": 21.52, "sell": 21.75, "mid": 21.64},
+      "JPY": {"buy": 4.76, "sell": 4.83, "mid": 4.80},
+      "KRW": {"buy": 0.521, "sell": 0.528, "mid": 0.525}
+    },
+    "ABC": {
+      "status": "ok",
+      "EUR": {"buy": 780.05, "sell": 783.50, "mid": 781.75},
+      "USD": {"buy": 723.35, "sell": 726.25, "mid": 724.81},
+      "THB": {"buy": 21.54, "sell": 21.73, "mid": 21.63},
+      "JPY": {"buy": 4.77, "sell": 4.82, "mid": 4.79},
+      "KRW": {"buy": 0.522, "sell": 0.526, "mid": 0.524}
+    }
+  }
+}

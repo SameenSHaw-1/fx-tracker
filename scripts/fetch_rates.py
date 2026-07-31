@@ -12,6 +12,7 @@ All rates normalised to: 100 units of foreign currency = X CNY
 import json
 import os
 import sys
+import time
 from datetime import datetime, timezone, timedelta
 
 import requests
@@ -61,23 +62,41 @@ def today_cst() -> str:
 
 def fetch_market_rates() -> dict[str, float]:
     """
-    Fetch latest CNY-based rates from frankfurter.app.
+    Fetch latest CNY-based rates with retries + multiple endpoints.
     Returns dict: {"EUR": <100 units in CNY>, "USD": ..., ...}
     """
-    url = "https://api.frankfurter.app/latest?from=CNY&symbols=EUR,USD,JPY,KRW,THB"
-    resp = requests.get(url, timeout=20)
-    resp.raise_for_status()
-    data = resp.json()
+    endpoints = [
+        "https://api.frankfurter.dev/v1/latest?base=CNY&symbols=EUR,USD,JPY,KRW,THB",
+        "https://api.frankfurter.app/latest?from=CNY&symbols=EUR,USD,JPY,KRW,THB",
+    ]
 
-    # data["rates"] is CNY -> foreign, e.g. {"EUR": 0.1280, "USD": 0.1380, ...}
-    # We need foreign -> CNY per 100 units = (1 / rate) * 100
-    result = {}
-    for currency, cny_per_foreign_inv in data["rates"].items():
-        if currency in CURRENCIES and cny_per_foreign_inv > 0:
-            per_100 = round((1.0 / cny_per_foreign_inv) * 100, 4)
-            result[currency] = per_100
+    last_err = None
+    for attempt in range(1, 4):
+        for url in endpoints:
+            try:
+                resp = requests.get(url, timeout=20)
+                resp.raise_for_status()
+                data = resp.json()
+                rates = data.get("rates") or {}
+                if not rates:
+                    raise ValueError("empty rates payload")
 
-    return result
+                result = {}
+                for currency, cny_per_foreign_inv in rates.items():
+                    if currency in CURRENCIES and cny_per_foreign_inv > 0:
+                        result[currency] = round((1.0 / cny_per_foreign_inv) * 100, 4)
+
+                if result:
+                    print(f"[OK] source={url} attempt={attempt}")
+                    return result
+                raise ValueError("no usable currency in payload")
+            except Exception as e:
+                last_err = e
+                print(f"[WARN] attempt {attempt} failed on {url}: {e}", file=sys.stderr)
+        if attempt < 3:
+            time.sleep(5 * attempt)
+
+    raise RuntimeError(f"all endpoints failed after 3 rounds: {last_err}")
 
 
 def make_bank_rates(mid_rates: dict[str, float], bank: str) -> dict:
@@ -117,6 +136,11 @@ def main():
         print(f"[OK] Market rates: {mid_rates}")
     except Exception as e:
         print(f"[ERR] Failed to fetch market rates: {e}", file=sys.stderr)
+        if os.path.exists(RATES_FILE):
+            print("[SKIP] Upstream unavailable, keeping existing rates.json. "
+                  "Exiting 0 so the workflow does not fail.", file=sys.stderr)
+            sys.exit(0)
+        print("[FATAL] No cached rates.json to fall back on.", file=sys.stderr)
         sys.exit(1)
 
     all_rates = {}
